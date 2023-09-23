@@ -26,6 +26,8 @@ import pandas as pd
 import requests 
 import xmltodict 
 import json
+import streamlit as st
+
 
 import get_gps_location as gl 
 
@@ -78,6 +80,9 @@ def make_station_list(df):
     return station_names
 
 
-print(find_station_around_me(final_url))
+view =find_station_around_me(final_url)
 
-#df.to_html()
+view
+
+st.write('Hello, *World!* :sunglasses:')
+
