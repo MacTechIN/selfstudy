@@ -40,7 +40,6 @@ service_url = "http://apis.data.go.kr/6410000/busstationservice"
 service_name = "/getBusStationAroundList"
 encoding_key = "%2BltohkyQC0eQUMVVaH5qwUi4FxaROssy0kpwzEdkqsFqedo%2FKlvT05Ap0svSUr2xQsOHd9%2FK2pXWpnH5N%2BmTcg%3D%3D" 
 auth_key = "?serviceKey=" + encoding_key
-final_url = ""
 
 def set_coordination(coord_xy):
     x = coord_xy[0]
@@ -49,12 +48,12 @@ def set_coordination(coord_xy):
     return coordination
 
 # 주소를 대입하여 위도 경도 x,y 좌표 읽어와 서비스 URL 대입함 
+xy_arr = gl.getXY_from_json(myAdd)
 
-def finish_url(myAddress):
-    xy_arr = gl.getXY_from_json(myAddress)
-    serviceKey = set_coordination(xy_arr) 
-    final_url = service_url+service_name+auth_key+serviceKey
-    # print(final_url)
+serviceKey = set_coordination(xy_arr) 
+final_url = service_url+service_name+auth_key+serviceKey
+
+# print(final_url)
 
 def find_station_around_me(final_url):
     bus_info_xml = requests.get(final_url)
@@ -81,19 +80,3 @@ def make_station_list(df):
     station_names = df[is_Suwon_bus]['stationName']
     return station_names
 
-
-
-
-st.write("안녕하세요 즐거운 출근을위한 findbus앱 입니다.")
-
-myAdd = st.text_input('주소를 넣어주세요', '경기도 수원시 ')
-st.write("당신이 입력한 주소는" , myAdd,"맞죠 ?")
-
-if st.button('맞아요!!'):
-    st.write("## 당신의 주소에서 반경 200m에 있는 정류장 목록입니다.")
-    finish_url(myAdd)
-    view =find_station_around_me(final_url)
-    view
-else:
-    st.write("다시 입력 해주세요.")
-    
